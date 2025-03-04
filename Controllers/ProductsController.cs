@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProductsAPI.Models;
+using SQLitePCL;
 
 namespace ProductsAPI.Controllers
 {
@@ -11,39 +13,29 @@ namespace ProductsAPI.Controllers
     [Route("api/[controller]")]
     public class ProductsController:ControllerBase
     {
-        private static List<Product>? _product;
+        private readonly ProductsContext _context;
 
-        public ProductsController()
+        public ProductsController(ProductsContext context)
         {
-            _product = new List<Product>
-            {
-                new Product {ProductId = 1,ProductName="Iphone 14",Price=60000,IsActive=true},
-                new Product {ProductId = 2,ProductName="Iphone 15",Price=70000,IsActive=true},
-                new Product {ProductId = 3,ProductName="Iphone 16",Price=80000,IsActive=true},
-                new Product {ProductId = 4,ProductName="Iphone 17",Price=90000,IsActive=true},
-            };
-            
+            _context = context;
         }
         
 
         [HttpGet]
-        public IActionResult GetProducts()
+        public async Task<IActionResult> GetProducts()
         {
-            if(_product == null)
-            {
-                return NotFound();
-            }
-            return Ok(_product);
+            var products = await _context.Products.ToListAsync();
+            return Ok(products);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetProduct(int? id)
+        public async Task<IActionResult> GetProduct(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            var p = _product?.FirstOrDefault(p => p.ProductId==id);
+            var p = _context?.Products.FirstOrDefaultAsync(p => p.ProductId==id);
 
             if (p==null)
             {
