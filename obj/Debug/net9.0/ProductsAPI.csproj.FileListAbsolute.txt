@@ -1,0 +1,8 @@
+/Users/omerapaydin/Desktop/Back-end/MyProjects/WebApi/ProductsAPI/obj/Debug/net9.0/ProductsAPI.csproj.AssemblyReference.cache
+/Users/omerapaydin/Desktop/Back-end/MyProjects/WebApi/ProductsAPI/obj/Debug/net9.0/ProductsAPI.GeneratedMSBuildEditorConfig.editorconfig
+/Users/omerapaydin/Desktop/Back-end/MyProjects/WebApi/ProductsAPI/obj/Debug/net9.0/ProductsAPI.AssemblyInfoInputs.cache
+/Users/omerapaydin/Desktop/Back-end/MyProjects/WebApi/ProductsAPI/obj/Debug/net9.0/ProductsAPI.AssemblyInfo.cs
+/Users/omerapaydin/Desktop/Back-end/MyProjects/WebApi/ProductsAPI/obj/Debug/net9.0/ProductsAPI.csproj.CoreCompileInputs.cache
+/Users/omerapaydin/Desktop/Back-end/MyProjects/WebApi/ProductsAPI/obj/Debug/net9.0/ProductsAPI.MvcApplicationPartsAssemblyInfo.cs
+/Users/omerapaydin/Desktop/Back-end/MyProjects/WebApi/ProductsAPI/obj/Debug/net9.0/ProductsAPI.MvcApplicationPartsAssemblyInfo.cache
+/Users/omerapaydin/Desktop/Back-end/MyProjects/WebApi/ProductsAPI/obj/Debug/net9.0/ProductsAPI.sourcelink.json
