@@ -43,5 +43,46 @@ namespace ProductsAPI.Controllers
             }
             return Ok(p);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct(Product entity)
+        {
+            _context.Products.Add(entity);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetProduct),new {id = entity.ProductId},entity);
+        }
+
+
+        [HttpPut("{id}")]
+
+        public async Task<IActionResult> UpdateProduct(int id,Product entity)
+        {
+            if(id != entity.ProductId)
+            {
+                return BadRequest();
+            }
+
+            var product = await _context.Products.FirstOrDefaultAsync(i =>i.ProductId ==id);
+
+            if(product == null)
+            {
+                return NotFound();
+            }
+
+            product.ProductName = entity.ProductName;
+            product.Price = entity.Price;
+            product.IsActive = entity.IsActive;
+            try{
+                await _context.SaveChangesAsync();
+            }catch(Exception e)
+            {
+                return NotFound();
+            }
+            return NoContent();
+
+        }
+
+
+
     }
 }
