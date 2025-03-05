@@ -10,6 +10,9 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<ProductsContext>(x=>x.UseSqlite("Data Source = data.db"));
 
+builder.Services.AddIdentity<AppUser,AppRole>().AddEntityFrameworkStores<ProductsContext>();
+
+
 
 var app = builder.Build();
 
