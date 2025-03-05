@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ProductsAPI.DTO;
 using ProductsAPI.Models;
 using SQLitePCL;
 
@@ -24,7 +25,7 @@ namespace ProductsAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-            var products = await _context.Products.ToListAsync();
+            var products = await _context.Products.Where(a=>a.IsActive).Select(p=>productToDTO(p)).ToListAsync();
             return Ok(products);
         }
 
@@ -35,7 +36,7 @@ namespace ProductsAPI.Controllers
             {
                 return NotFound();
             }
-            var p = _context?.Products.FirstOrDefaultAsync(p => p.ProductId==id);
+            var p = _context?.Products.Select(p=>productToDTO(p)).FirstOrDefaultAsync(p => p.ProductId==id);
 
             if (p==null)
             {
@@ -109,6 +110,16 @@ namespace ProductsAPI.Controllers
 
 
         }
+
+        private static ProductDTO productToDTO(Product p)
+        {
+            return new ProductDTO{
+                ProductId = p.ProductId,
+                ProductName = p.ProductName,
+                Price = p.Price
+            };
+        }
+
 
     }
 }
