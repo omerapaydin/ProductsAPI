@@ -5,7 +5,20 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProductsAPI.Models;
 
+var MyAllowSpecificOrigins = "_MyAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options=>{
+    options.AddPolicy(MyAllowSpecificOrigins,policy =>{
+        policy.WithOrigins("http://127.0.0.1:5500")
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
+
+
+
 
 // Add services to the container.
 builder.Services.AddOpenApi();
@@ -76,6 +89,8 @@ app.UseHttpsRedirection();
 
 // **DOĞRU SIRALAMA**: Authentication önce, Authorization sonra
 app.UseAuthentication();
+app.UseRouting();
+app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthorization();
 
 var summaries = new[]
