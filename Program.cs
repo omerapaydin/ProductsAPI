@@ -88,9 +88,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // **DOĞRU SIRALAMA**: Authentication önce, Authorization sonra
-app.UseAuthentication();
+
 app.UseRouting();
 app.UseCors(MyAllowSpecificOrigins);
+app.UseAuthentication();
 app.UseAuthorization();
 
 var summaries = new[]
