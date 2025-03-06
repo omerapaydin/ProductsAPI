@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using ProductsAPI.DTO;
 using ProductsAPI.Models;
 
@@ -15,10 +19,12 @@ namespace ProductsAPI.Controllers
     {
         private UserManager<AppUser> _userManager;
         private SignInManager<AppUser> _signInManager;
-        public UserController(UserManager<AppUser> userManager,SignInManager<AppUser> signInManager)
+        private IConfiguration _configuration;
+        public UserController(UserManager<AppUser> userManager,SignInManager<AppUser> signInManager,IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _configuration = configuration;
         }
 
         [HttpPost("register")]
@@ -69,7 +75,21 @@ namespace ProductsAPI.Controllers
 
         private object GenerateJWT(AppUser user)
         {
-            throw new NotImplementedException();
+           var tokenHandler = new JwtSecurityTokenHandler();
+           var key = Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings:Secret").Value ?? "");
+           var tokenDescriptor = new SecurityTokenDescriptor
+           {
+            Subject = new ClaimsIdentity(
+                new Claim[] {
+                    new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
+                    new Claim(ClaimTypes.Name,user.UserName ?? ""),
+                }
+            ),
+                Expires = DateTime.UtcNow.AddDays(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),SecurityAlgorithms.HmacSha256Signature)
+           };
+           var token = tokenHandler.CreateToken(tokenDescriptor);
+           return tokenHandler.WriteToken(token);
         }
     }
 }
